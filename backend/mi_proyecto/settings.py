@@ -43,11 +43,11 @@ ALLOWED_HOSTS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://chrisdieria.github.io",
+    "https://chrisdieria-glitch.github.io",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://chrisdieria.github.io",
+    "https://chrisdieria-glitch.github.io",
 ]
 
 CSRF_COOKIE_SECURE = True
