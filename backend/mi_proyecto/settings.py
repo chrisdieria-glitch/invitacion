@@ -50,6 +50,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://chrisdieria-glitch.github.io",
 ]
 
+CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
