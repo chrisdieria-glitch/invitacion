@@ -109,7 +109,7 @@ function App() {
     try {
       const csrfToken = await getCsrfToken();
 
-      const response = await fetch("http://localhost:8000/api/", {
+      const response = await fetch("https://invitacion-ixlf.onrender.com/api/", {
         method: "POST",
         credentials: "include",
         headers: {
