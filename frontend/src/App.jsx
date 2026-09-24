@@ -80,7 +80,7 @@ function App() {
   const [sendError, setSendError] = useState(null);
 
   const getCsrfToken = async () => {
-    const response = await fetch("http://localhost:8000/api/csrf/", {
+    const response = await fetch("https://invitacion-ixlf.onrender.com/api/csrf/", {
       credentials: "include",
     });
 
