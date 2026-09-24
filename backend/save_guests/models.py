@@ -7,4 +7,4 @@ class Attendance(models.Model):
     attendance_confirmation = models.CharField(max_length=200)
 
     def __str__(self):
-        return f"{self.name} - {self.attendance}"
+        return f"{self.name} - {self.attendance_confirmation}"
