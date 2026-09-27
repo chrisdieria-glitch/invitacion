@@ -199,7 +199,7 @@ function App() {
             <span />
           </div>
 
-          <p className="date-line">1 de noviembre</p>
+          <p className="date-line">7 de noviembre</p>
 
           <div className="future-details-space" aria-hidden="true"></div>
         </div>
