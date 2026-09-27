@@ -1,5 +1,6 @@
+from django.conf import settings
 from django.http import JsonResponse
-from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_exempt
 import json
 
 from .models import Attendance
@@ -8,9 +9,27 @@ ALLOWED_ATTENDANCE_VALUES = {"yes", "no"}
 NAME_MAX_LENGTH = 200
 
 
+def _origin_is_allowed(request):
+    """Sustituye al chequeo de Origin que hacía CsrfViewMiddleware.
+
+    Un navegador siempre manda Origin en un POST cross-site, así que si
+    viene y no está en la allowlist, la petición no salió de nuestra web.
+    Si no viene, es un cliente que no es un navegador (script, app), que
+    podría falsear la cabecera de todas formas: lo dejamos pasar.
+    """
+    origin = request.headers.get("Origin")
+    if not origin:
+        return True
+    return origin in settings.CORS_ALLOWED_ORIGINS
+
+
+@csrf_exempt
 def api_home(request):
     if request.method != "POST":
         return JsonResponse({"error": "Método no permitido"}, status=405)
+
+    if not _origin_is_allowed(request):
+        return JsonResponse({"error": "Origen no permitido."}, status=403)
 
     try:
         data = json.loads(request.body)

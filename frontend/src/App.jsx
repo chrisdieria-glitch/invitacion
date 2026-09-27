@@ -79,16 +79,6 @@ function App() {
   const [sent, setSent] = useState(false);
   const [sendError, setSendError] = useState(null);
 
-  const getCsrfToken = async () => {
-    const response = await fetch("https://invitacion-ixlf.onrender.com/api/csrf/", {
-      credentials: "include",
-    });
-
-    const data = await response.json();
-
-    return data.csrfToken;
-  };
-
   const sendData = async (event) => {
     event.preventDefault();
 
@@ -107,14 +97,10 @@ function App() {
     setSendError(null);
 
     try {
-      const csrfToken = await getCsrfToken();
-
       const response = await fetch("https://invitacion-ixlf.onrender.com/api/", {
         method: "POST",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
         },
         body: JSON.stringify({
           name: trimmedName,
@@ -122,22 +108,23 @@ function App() {
         }),
       });
 
-      const data = await response.json().catch(() => ({}));
+      const data = await response.json().catch(() => null);
 
       if (!response.ok) {
-        console.log(data);
+        console.error("POST /api/ ->", response.status, data);
         setSendError(
-          data.error || "No se pudo enviar tu confirmación. Inténtalo de nuevo."
+          data?.error ||
+            `No se pudo enviar tu confirmación (error ${response.status}). Inténtalo de nuevo.`
         );
         return;
       }
 
-      console.log(data);
-
       setSent(true);
     } catch (error) {
       console.error(error);
-      setSendError("No se pudo enviar tu confirmación. Inténtalo de nuevo.");
+      setSendError(
+        "No se pudo enviar tu confirmación. Revisa tu conexión e inténtalo de nuevo."
+      );
     } finally {
       setSubmitting(false);
     }
